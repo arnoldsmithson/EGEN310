@@ -35,7 +35,7 @@ ar = PiMotor.Arrow(4)
 #event at 1572931344.985454, code 09, type 03, val 1023
 
 
-#Button Assignment
+#Button Assignment - if you change the controller, just use trial and error to find your own version of these numbers.
 aBtn = 304
 bBtn = 305
 xBtn = 306
@@ -48,6 +48,8 @@ select = 310
 start = 311
 northSouthArrow = 17
 eastWestArrow = 16
+
+#start servo at default angle
 kill = 0
 angle = 7
 pwm.ChangeDutyCycle(7)
@@ -57,9 +59,11 @@ pwm.ChangeDutyCycle(7)
 #Goes over every button assignment and according function 
 for event in gamepad.read_loop():
     print(event)
-    if event.type == ecodes.EV_KEY or event.type == 3:
+    if event.type == ecodes.EV_KEY or event.type == 3: # if button is pressed
+        
         if event.value != 0:
-            if event.code == aBtn:
+            
+            if event.code == aBtn: #user presses A button
                 print("A Pressed")
                 ab.on()
                 motorAll.reverse(100)
@@ -73,41 +77,41 @@ for event in gamepad.read_loop():
                         pwm.ChangeDutyCycle(angle -1)
                         angle -= 1
                         time.sleep(.1)
-            elif event.code == bBtn:
+            elif event.code == bBtn: #user presses B button
                 print("B Pressed")
                 ar.on()
                 m1.forward(38)
                 m2.forward(38)
-            elif event.code == yBtn:
+            elif event.code == yBtn: #user presses Y button
                 print("Y Pressed")
                 af.on()
                 motorAll.forward(100)
                
-            elif event.code == xBtn:
+            elif event.code == xBtn:#user presses X button
                 print("X Pressed")
                 al.on()
                 m1.reverse(38)
                 m2.reverse(38)
                 
-            elif event.code == leftBump:
+            elif event.code == leftBump: #user presses Left Bumper
                 print("Left Bumper Pressed")
                 GPIO.output(3,True)
                 pwm.ChangeDutyCycle(angle-1)
                 angle -= 1
                 print(angle)
                 GPIO.output(3,False)
-            elif event.code == rightBump:
+            elif event.code == rightBump: #user presses Right Bumper
                 print("Right Bumper Pressed ")
                 GPIO.output(3,True)
                 pwm.ChangeDutyCycle(angle + 1)
                 angle += 1
                 print(angle)
                 GPIO.output(3,False)
-            elif event.code == leftTrig:
+            elif event.code == leftTrig: #user presses Left Trigger
                 print("Left Trigger Pressed")
                 ab.on()
                 motorAll.forward(int((event.value/1023)*100))
-            elif event.code == rightTrig:
+            elif event.code == rightTrig: #user presses Right Trigger
                 print("Right Trigger Pressed")
                 af.on()
                 motorAll.reverse(int((event.value/1023)*100))
@@ -120,14 +124,14 @@ for event in gamepad.read_loop():
                         pwm.ChangeDutyCycle(angle -1)
                         angle -= 1
                         time.sleep(.1)
-            elif event.code == start:
+            elif event.code == start:#user presses Start button
                 m3.reverse(60)
                 m4.reverse(60)
                 ab.on()
                 print("Start Button Pressed")
-            elif event.code == select:
+            elif event.code == select: #user presses Select Button
                 print("Select Button Pressed")
-            elif event.code == northSouthArrow:
+            elif event.code == northSouthArrow: #user presses North or south DPad
                 if event.value == 1:
                     m1.reverse(60)
                     m2.reverse(60)
@@ -137,7 +141,7 @@ for event in gamepad.read_loop():
                     print("Up Pressed")
                 else:
                     print("Direction Released")
-            elif event.code == eastWestArrow:
+            elif event.code == eastWestArrow: #user presses east or west DPad
                 if event.value == 1:
                     print("Right Pressed")
                 elif event.value == -1:
@@ -145,7 +149,7 @@ for event in gamepad.read_loop():
                 else:
                     print("Direction Released")
         
-        elif event.value == 0:
+        elif event.value == 0: #everything above but released
             if event.code == aBtn:
                 print("A Released")
                 ab.off()
@@ -196,5 +200,5 @@ for event in gamepad.read_loop():
 
 
 
-pwm.stop()
+pwm.stop()# stop servo and motors
 GPIO.cleanup()
