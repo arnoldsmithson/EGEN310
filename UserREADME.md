@@ -1,7 +1,9 @@
-#User README
+# User README
 
 To run this program on any computer, you'll need to grab the number of input device for your controller or other input device. You can do that by running a specific command in your command line.
 Using that same command, you'll want to choose your input device and run a series of tests to grab what code each button has. The code is the number associated when pressing the button.
 For example, pressing the A button on my specific Xbox controller was associated with the value '304.' To tell whether the button has been pressed or release, the state will have a 1 for pressed and a 0 for released.
 You'll need to change the values accordingly for your specific Xbox controller, and for any other input device as well. 
 I didn't code the joysticks because there was so much data being sent in at once that it wasn't really feasible with the limitations I set on myself.
+
+This program can be a little finicky depending on how you run it. If ran on a computer, it can read input no problem because your input device will already be connected. If running it on a raspberry pi, there are two cases: It'll run fine as long as it's connected to a monitor and running its OS. If it's running headless, you'll want to make sure no other input device is connected, turn on the bluetooth controller for pairing, and then turn on the raspberry pi. The reason for this is because the raspberry pi will be looking for connections as long as it's on, and if the xbox controller is turned on too late after the pi starts, the program will load and fail before the controller is connected. This program relies on the idea that the controller will be connected milliseconds before the program runs. It's unfortunate to have such a tight time frame, but starting the controller before starting the pi is guaranteed to work.
